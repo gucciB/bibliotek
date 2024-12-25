@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Gochi+Hand&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities{
+  .title-text-res{
+    font-size: clamp(1rem, 2.5vw, 4rem);
+  }
+  .height-50{
+    height: 50%;
+  }
+}
