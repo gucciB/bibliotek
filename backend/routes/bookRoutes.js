@@ -1,8 +1,10 @@
-import express from "express";
-const bookRoute = express.Router();
+import {Router} from "express";
+const bookRoute = Router();
 
-import { getBooks, 
-  insertBook, 
+import { 
+  getBooks, 
+  insertBook,
+  searchBooks, 
   getBookbyID,
   updateBook,
   deleteBook
@@ -10,8 +12,11 @@ import { getBooks,
 
 bookRoute.post("/", insertBook);
 bookRoute.get("/", getBooks);
+bookRoute.get("/search", searchBooks);
+
 bookRoute.get("/:id", getBookbyID);
 bookRoute.put("/:id", updateBook);
 bookRoute.delete("/:id", deleteBook);
+
 
 export default bookRoute;

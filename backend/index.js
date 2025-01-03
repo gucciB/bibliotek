@@ -19,11 +19,13 @@ const URI = process.env.MONGO_URI;
 await createConnection(URI);
 
 import bookRoute from "./routes/bookRoutes.js";
+import userRouter from "./routes/userRoutes.js";
 
 app.get("/", (request, response) => {
   response.status(200).send("Home Page");
 })
 
+app.use("/", userRouter);
 app.use("/book", bookRoute);
 
 app.listen( PORT, () => {
