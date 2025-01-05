@@ -9,7 +9,8 @@ function compareDigest(enteredPassword, storedDigest){
   return enteredPassword == storedDigest;
 }
 
-export async function userSignUp({body: {username, email, password}}, response) {
+export async function userSignUp(request, response) {
+  const {username, email, password} = request.body;
   try {
     const user = await User.findOne( {email: email} );
     if( user ){
@@ -26,13 +27,23 @@ export async function userSignUp({body: {username, email, password}}, response) 
       salt: salt
     }
     const insertRes = await User.create(newUser)
+    if ( !insertRes ) {
+      throw new Error("User Creation Failed.");
+    }
+    request.session.userId = newUser.username;
+    request.session.isLoggedIn = true;
+    console.log("Session after login:", request.session);
     return response.status(201).json(newUser);
+
   } catch (error) {
-    return response.status(500).json(error);
+    response.status(500).json(
+      responseHandler(false, "500", "Internal Error", error.message)
+    );
   }
 }
 
-export async function userLogin({body: {email, password}}, response) {
+export async function userLogin( request, response) {
+  const { email, password } = request.body;
   try {
     const user = await User.findOne( {email: email} );
     if( !user ){
@@ -51,11 +62,29 @@ export async function userLogin({body: {email, password}}, response) {
       );
     }
 
+    request.session.userId = user.username;
+    request.session.isLoggedIn = true;
+
+    console.log("Session after login:", request.session);
     return response.status(200).json(user);
+
   } catch (error) {
-    response.status(500).json(
+    return response.status(500).json(
       responseHandler(false, "500", "Internal Error", error.message)
     );
+  }
+}
+
+export async function userLogout(request, response) {
+  if( request.session && request.session.userId ){
+    request.session.destroy((error) => {
+      if( error ){ 
+        return response.status(500).json(
+          responseHandler(false, "500", "Internal Error", error.message)
+        );
+      }response.clearCookie("connect.sid");
+      return response.status(200).json({ message: "Logged out successfully." });
+    })
   }
 }
 
