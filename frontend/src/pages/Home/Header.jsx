@@ -1,12 +1,53 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+import useApi from "../../hooks/useApi";
+import UserMenu from "./UserMenu";
 
 const Header = () => {
 
+  const api = useApi("http://localhost:5000");
+  const [user, setUser] = React.useState({
+    username: "",
+    isLoggedIn: false
+  });
+
+  const navigateTo = useNavigate();
+  function navigateToLogin(){
+    if ( !user.isLoggedIn ) {
+      navigateTo("/login");
+    }else{
+      setMenuState( prevState => ({...prevState, isClicked: !prevState.isClicked}) )
+    }
+  }
+
+  const [menuState, setMenuState] = React.useState({
+    isHovered: false,
+    isClicked: false
+  });const isMenuVisible = user.isLoggedIn && ( menuState.isClicked || menuState.isHovered );
+ 
   const [bookName, setBookName] = React.useState('')
   const handleChange = (event) => {
     setBookName(event.target.value);
   }
+
+  const initUser = async()  => {
+    try {
+      const response = await api.get("/");
+      const {isLoggedIn} = response.data;
+      if( !isLoggedIn ){
+        setUser( {username: "", isLoggedIn: false} ); return;
+      }setUser( {username: response.data.username, isLoggedIn: true} );
+    } catch (error) {
+      alert("User Session Initialization Error : " + error.message);
+    }
+  }
+
+  React.useEffect( () => {
+    async function loadSession() {
+      await initUser();
+    }loadSession();
+  }, [ ]);
 
   return (
     <header className="flex flex-row bg-zinc-100 shadow-lg">
@@ -24,12 +65,17 @@ const Header = () => {
         <button className="font-DMsans border-2 h-1/2 w-28 mx-1 p-2 rounded-lg border-gray-200 shadow-md hover:shadow-lg duration-200 text-base tracking-wider active:scale-95 bg-slate-50">Search</button>
       </div>
       <div className="w-1/4 flex flex-row ml-auto justify-around">
-        <Link to='/login' className="self-center ">
-          <div className="mx-4 font-DMsans border-2 h-1/2 w-auto p-2 shadow-md hover:shadow-lg duration-200 text-base tracking-wider active:scale-95 bg-none flex rounded-full hover:scale-105">
+          <button className="self-center mx-4 font-DMsans border-2 h-1/2 w-auto p-2 shadow-md hover:shadow-lg duration-200 text-base tracking-wider active:scale-95 bg-none flex rounded-full relative"
+          onMouseEnter={ () => setMenuState(prevState => ({...prevState, isHovered: true })) }
+          onMouseLeave={ () => setMenuState(prevState => ({...prevState, isHovered: false})) }
+          onClick={navigateToLogin}>
             <img src="/account_circle.svg" alt="Unknown Profile" />
-            <span className="mx-3">Log In</span>
-          </div>
-        </Link>
+            <span className="mx-3">{ user.isLoggedIn ? user.username : 'Log In'}</span>
+            {user.isLoggedIn && 
+            <img src="/arrow_drop_down.svg" alt="Unknown Profile" 
+            className={`${isMenuVisible ? "rotate-180" : "hover:rotate-180"} transition-transform duration-200`} />}
+            { isMenuVisible && <UserMenu  initUser={initUser} setMenuState={setMenuState} /> }
+          </button> 
       </div>
     </header>
   )

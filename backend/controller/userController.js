@@ -32,6 +32,8 @@ export async function userSignUp(request, response) {
     }
     request.session.userId = newUser.username;
     request.session.isLoggedIn = true;
+    await request.session.save();
+
     console.log("Session after login:", request.session);
     return response.status(201).json(newUser);
 
@@ -64,6 +66,7 @@ export async function userLogin( request, response) {
 
     request.session.userId = user.username;
     request.session.isLoggedIn = true;
+    await request.session.save();
 
     console.log("Session after login:", request.session);
     return response.status(200).json(user);
@@ -76,6 +79,8 @@ export async function userLogin( request, response) {
 }
 
 export async function userLogout(request, response) {
+  console.log("Session Destroyed");
+  
   if( request.session && request.session.userId ){
     request.session.destroy((error) => {
       if( error ){ 
@@ -86,6 +91,7 @@ export async function userLogout(request, response) {
       return response.status(200).json({ message: "Logged out successfully." });
     })
   }
+  return response.status(200).json({ message: "No user to logout." });
 }
 
 export async function getUsers(request, response) {
