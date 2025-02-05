@@ -12,3 +12,7 @@
     height: 50%;
   }
 }
+
+body {
+  @apply overflow-hidden;
+}

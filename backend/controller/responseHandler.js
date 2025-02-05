@@ -1,10 +1,9 @@
 export function responseHandler(success, status, title, detail) {
-  return {
+  if( !success ){
+    return {
       success: success,
-      errors: {
-          status,
-          title,
-          detail
-      }
-  };
+      errors: { status, title, detail}
+    };
+  }return { success, status, title, detail }
+    
 }

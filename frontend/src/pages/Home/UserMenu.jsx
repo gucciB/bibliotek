@@ -12,12 +12,15 @@ const UserMenu = ( { initUser, setMenuState } ) => {
   async function logOut(){
     try {
       const response = await api.get("/user/logout");
+      console.log("Response : ", response);
+      
       if( response.status === 200 ){
         await initUser();
         navigateTo("/");
       }
     } catch (error) {
-      alert("Logout Error : " + error.message);
+      console.log(error.response);
+      console.log("Logout Error : " + error.message);
     }
   }
 

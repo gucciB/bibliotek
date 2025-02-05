@@ -51,12 +51,12 @@ const Header = () => {
 
   return (
     <header className="flex flex-row bg-zinc-100 shadow-lg">
-      <Link to="/" className="w-1/4" draggable='false'>
-        <div className="select-none cursor-pointer p-3 flex-grow" >
-          <img className="inline w-2/12 mx-2" src="/favico.png" alt="Bibliotek Logo" draggable='false' />
-          <span className="font-gochi title-text-res mx-2 text-gray-600 " >BiblioTek</span>
-        </div>
-      </Link>
+        <Link to="/" className="w-1/4" draggable='false'>
+          <div className="select-none cursor-pointer p-3 flex-grow" >
+            <img className="inline w-2/12 mx-2" src="/favico.png" alt="Bibliotek Logo" draggable='false' />
+            <span className="font-gochi title-text-res mx-2 text-gray-600 " >BiblioTek</span>
+          </div>
+        </Link>
       <div className="w-2/4 flex flex-row items-center self-center">
         <input className="border-2 border-gray-200 shadow-md focus:shadow-xl focus:border-gray-300 duration-200 rounded-lg placeholder:font-gochi placeholder:text-lg indent-3 mx-1 outline-none hover:shadow-xl w-11/12 h-11"
           id="bookname" type="text" placeholder="Search Books..."
@@ -64,7 +64,7 @@ const Header = () => {
           onChange={handleChange} />
         <button className="font-DMsans border-2 h-1/2 w-28 mx-1 p-2 rounded-lg border-gray-200 shadow-md hover:shadow-lg duration-200 text-base tracking-wider active:scale-95 bg-slate-50">Search</button>
       </div>
-      <div className="w-1/4 flex flex-row ml-auto justify-around">
+      <div className="w-1/4 flex flex-row ml-auto justify-around transition-all duration-200">
           <button className="self-center mx-4 font-DMsans border-2 h-1/2 w-auto p-2 shadow-md hover:shadow-lg duration-200 text-base tracking-wider active:scale-95 bg-none flex rounded-full relative"
           onMouseEnter={ () => setMenuState(prevState => ({...prevState, isHovered: true })) }
           onMouseLeave={ () => setMenuState(prevState => ({...prevState, isHovered: false})) }
@@ -78,7 +78,7 @@ const Header = () => {
           </button> 
       </div>
     </header>
-  )
+  );
 }
 
 export default Header

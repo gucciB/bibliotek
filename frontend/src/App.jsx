@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 
 import Home from "./pages/Home";
 import NotFoundPage from "./pages/NotFoundPage";
@@ -21,7 +22,9 @@ const routes = createBrowserRouter([
 
 const App = () => {
   return (
-    <RouterProvider router={routes} />
+    <AnimatePresence mode="wait">
+      <RouterProvider router={routes} />
+    </AnimatePresence>
   );
 }
 
