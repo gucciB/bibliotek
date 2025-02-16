@@ -34,7 +34,7 @@ const Header = () => {
   const initUser = async()  => {
     try {
       const response = await api.get("/");
-      const {isLoggedIn} = response.data;
+      const { isLoggedIn } = response.data;
       if( !isLoggedIn ){
         setUser( {username: "", isLoggedIn: false} ); return;
       }setUser( {username: response.data.username, isLoggedIn: true} );
@@ -47,7 +47,8 @@ const Header = () => {
     async function loadSession() {
       await initUser();
     }loadSession();
-  }, [ ]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <header className="flex flex-row bg-zinc-100 shadow-lg">

@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from './Home/Header';
-import Navbar from './Home/Navbar';
+import Books from './Books';
 
 const Home = () => {
 
@@ -8,12 +8,12 @@ const Home = () => {
     setTimeout( () => {
       document.title = "Bibliotek";
     }, 3000);
-  } ,[])
+  } ,[]);
 
   return (
     <>
       <Header />
-      <Navbar />
+      <Books />
       <div className='font-DMsans'>Home</div>
     </>
   )

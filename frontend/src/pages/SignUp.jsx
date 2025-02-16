@@ -171,7 +171,11 @@ const SignUp = () => {
                   }</AnimatePresence>
                 
                 <span className="text-sm text-gray-500">
-                  Already have an account? <Link className="text-sm text-amber-600 hover:underline" to={"/login"}>Log In</Link>
+                  Already have an account? <Link className="text-sm text-amber-600 hover:underline" 
+                  onClick={ (event) => {
+                    event.preventDefault();
+                    navigateTo("/login", { replace: true });
+                  }}>Log In</Link>
                 </span>
                 <button className="font-DMsans bg-none text-base tracking-wider 
                 mb-5 mt-3 m-auto 

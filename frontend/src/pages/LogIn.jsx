@@ -102,7 +102,12 @@ const LogIn = () => {
               />
 
               <span className="text-sm text-gray-500">
-                New to Bibliotek? <Link to={"/signup"} className="text-amber-600 hover:underline"> Sign Up</Link> 
+                New to Bibliotek? <Link 
+                onClick={ (event) => {
+                  event.preventDefault();
+                  navigateTo("/signup", { replace: true });
+                }}
+                className="text-amber-600 hover:underline"> Sign Up</Link> 
               </span>
               <span className="text-sm m-2 hover:underline text-red-500 cursor-pointer">Forgot Password?</span>
 
